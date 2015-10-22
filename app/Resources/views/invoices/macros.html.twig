@@ -1,0 +1,41 @@
+{# Ao invés de escrever uma macro, poderíamos customizar o Collection Prototype:
+   http://symfony.com/doc/current/cookbook/form/form_customization.html#cookbook-form-custom-prototype
+ #}
+{% macro invoice_item_macro( form ) %}
+    <div class="row invoice-item">
+        <div class="col-md-7">
+            <div class="form-group">
+                <label>Produto</label>
+                {{ form_widget(form.product) }}
+                <div class="has-error">{{ form_errors(form.product) }}</div>
+            </div>
+        </div>
+        <!-- Preço deste produto -->
+        {{ form_widget(form.productPrice, {attr: {"class": "invoice-item-unit-price"}}) }}
+        <!-- quantidade -->
+        <div class="col-md-2">
+            <div class="form-group">
+                <label>Quantidade</label>
+                {{ form_widget(form.quantity, {attr: {"class": "invoice-item-quantity"}}) }}
+                <div class="has-error">{{ form_errors(form.quantity) }}</div>
+            </div>
+        </div>
+        <!-- preço total desse produto em particular -->
+         <div class="col-md-2">
+            <div class="form-group">
+                <label>Total </label>
+                {{ form_widget(form.totalPrice, {attr: {"class": "invoice-item-total-price"}}) }}
+                <div class="has-error">{{ form_errors(form.totalPrice) }}</div>
+            </div>
+        </div>
+        <!-- opcional, botão remover item -->
+        <div class="col-md-1">
+            <div class="form-group">
+                <label>&nbsp;</label>
+                <button type="button"  class="form-control  btn btn-default" title="Falta implementar essa funcionalidade">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+{% endmacro %}

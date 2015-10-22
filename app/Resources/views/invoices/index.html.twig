@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-default pull-right" href="{{ path('invoices_add') }}">Novo</a>
+        </div>
+    </div>
+    <div class="row margin-top-20">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Cliente</th>
+                    <th>Anotações/Observações</th>
+                    <th>Data registro</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                    <tr>
+                        <td>{{ item.customer }}</td>
+                        <td>{{ item.notes }}</td>
+                        <td>{{ item.createdAt | date('d-m-Y') }}</td>
+                        <td>
+                            <a href="{{ path('invoices_show', {id: item.id}) }}">Ver</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+{% endblock %}
+

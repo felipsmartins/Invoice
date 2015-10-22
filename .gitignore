@@ -39,3 +39,5 @@
 /.idea
 /fabfile.py
 /*.pyc
+
+*~

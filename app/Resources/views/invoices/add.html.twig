@@ -1,0 +1,161 @@
+{% from ':invoices:macros.html.twig' import invoice_item_macro %}
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+    <!-- Javascript usará este snippet para adicionar dinâmicamente
+	   mais entradas para itens - via $("#prototype_template").html() -->
+    <div id="prototype_template" style="display: none">
+        {{ invoice_item_macro(form.items.vars.prototype) }}
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-default pull-right" href="{{ path('invoices') }}">Orçamentos</a>
+        </div>
+    </div>
+    <div class="row margin-top-20">
+        <div class="col-md-12">
+            {{ form_start(form, { attr: {id: form.vars.id, 'novalidate': 'novalidate', } }) }}
+            <!-- Nome -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Cliente</label>
+                        {{ form_widget(form.customer) }}
+                        <div class="has-error">{{ form_errors(form.customer) }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Email -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Anotações/observações</label>
+                        {{ form_widget(form.notes) }}
+                        <div class="has-error">{{ form_errors(form.notes) }}</div>
+                    </div>
+                </div>
+            </div>
+
+            {# Embeded form #}
+            <div id="invoice-items-container" data-index="">
+                {% for invoice_item in form.items %}
+                    {{ invoice_item_macro(invoice_item) }}
+                {% else %}
+                    {# flush... #}
+                    {{ form_widget(form.items) }}
+                {% endfor %}
+            </div>
+
+            <!-- Botão para adicionar outro item dinamicamente via javisctipt -->
+            <div class="row">
+                <div class="col-md-12">
+                    <button type="button" id="attach_other" class="btn btn-success btn-sm">
+                        <span class="glyphicon glyphicon-plus-sign"></span> Adicionar item
+                    </button>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <hr/>
+                    <button type="submit" class="btn btn-primary pull-right">Salvar</button>
+                </div>
+            </div>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div> <!-- end col-md-12 -->
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+	{{ parent() }}
+    <script type="text/javascript">
+        /* add invoice-item */
+        $(function() {
+            var button = $("#attach_other");
+            var collectionHolder = $("#invoice-items-container");
+            // count the current form inputs we have (c.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            var inputCount = collectionHolder.find('.invoice-item').length;
+
+            collectionHolder.attr('data-index', inputCount);
+
+            function addItemForm(collectionHolder) {
+//                console.log('campos select de items: ', collectionHolder.attr('data-index')); //TODO: remover
+                // Get the data-prototype explained earlier
+                // var prototype = collectionHolder.data('prototype');
+                var prototype = $("#prototype_template").html();
+                // get the new index
+                var index = parseInt(collectionHolder.attr('data-index'));
+                // Replace '__name__' in the prototype's HTML to
+                // instead be a number based on how many items we have
+                var newForm = prototype.replace(/{{ form.items.vars.prototype.vars.name }}/g, index);
+                // increase the index with one for the next item
+                collectionHolder.attr("data-index", index+1);
+                collectionHolder.append(newForm);
+            }
+
+            button.on('click', function(event) {
+                // event.preventDefault();
+                addItemForm(collectionHolder);
+                updateSelectHandler();
+            });
+
+            // ---------------------------------------------------------------------------------------------------------
+            function updateSelectHandler() {
+                var invoiceItemLines = $("#invoice-items-container").find('.invoice-item');
+
+                invoiceItemLines.each(function(index, invoiceItemLine) {
+                    var invoiceItemLine  = $(invoiceItemLine);
+                    var productField     = invoiceItemLine.find('select');
+                    var quantityField    = invoiceItemLine.find('.invoice-item-quantity');
+                    var unitPriceField   = invoiceItemLine.find('.invoice-item-unit-price'); // hidden field
+                    var totalPriceField  = invoiceItemLine.find('.invoice-item-total-price');
+
+                    quantityField.off().on("blur", function(event) {
+                        var unitPriceFieldValue = parseFloat(unitPriceField.val()),
+                            quantityFieldValue  = parseFloat(this.value);
+
+                        if (quantityFieldValue) {
+                            if (unitPriceFieldValue) {
+                                totalPriceField.val(quantityFieldValue * unitPriceFieldValue);
+                            } else {
+                                this.value = "";
+                                alert("Selecione um produto primeiro!");
+                                productField.focus();
+                            }
+                        }
+                    });
+                    productField.off().on('change', function(event){
+                        onSelectProduct(this.value, unitPriceField);
+                    });
+                });
+            }
+            //on reload
+            updateSelectHandler();
+
+            function onSelectProduct(productId, unitPriceField)
+            {
+                var data = {id: productId, format: "json"},
+                    url = "{{ path('products_info') }}";
+                $.ajax({
+                    url: url,
+                    data: data
+                }).done(function(data) {
+                    unitPriceField.val(data.price);
+                }).fail(function(jqHXHR, textStatus) {
+                    console.log("Falha ao requisitar dados do produto!");
+                });
+            }
+        });
+    </script>
+
+{% endblock %}

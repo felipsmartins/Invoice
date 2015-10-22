@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-default pull-right" href="{{ path('customers') }}">Clientes</a>
+        </div>
+    </div>
+    <div class="row margin-top-20">
+        <div class="col-md-12">
+            {{ form_start(form, { attr: {id: form.vars.id, 'novalidate': 'novalidate', } }) }}
+            <!-- Nome -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        {{ form_widget(form.name) }}
+                        <div class="has-error">{{ form_errors(form.name) }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Email -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        {{ form_widget(form.email) }}
+                        <div class="has-error">{{ form_errors(form.email) }}</div>
+                    </div>
+                </div>
+            </div>
+            <hr/>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div> <!-- end col-md-12 -->
+    </div>
+
+{% endblock %}
+

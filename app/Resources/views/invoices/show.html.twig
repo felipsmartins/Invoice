@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ title }}</h1>
+            <small>Data do orçamento: {{ invoice.createdAt|date("d-m-Y H:i") }}</small>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-default pull-right" href="javascript:;" title="Não implementado">Editar</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Cliente</h3>
+            <p>{{ invoice.customer.name }}</p>
+        </div>
+    </div>
+
+    <div class="row margin-top-20">
+        <div class="col-md-12">
+            <h3>Itens da invoice</h3>
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço unitário</th>
+                    <th>Quantidade</th>
+                    <th>Total</th>
+                </tr>
+                </thead>
+                <tbody>
+                {#{% set items = invoice.items %}#}
+                {% for item in invoice.items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>{{ item.product.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.totalPrice }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h3>Notas/Anotações</h3>
+            <p>{{ invoice.notes | default("Nenhuma") }}</p>
+        </div>
+    </div>
+
+{% endblock %}

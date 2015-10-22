@@ -1,3 +1,41 @@
 app:
-    resource: "@AppBundle/Controller/"
-    type:     annotation
+    path: /
+    defaults: {_controller: AppBundle:Default:index}
+
+products:
+    path: /products
+    defaults: {_controller: AppBundle:Product:index}
+
+products_add:
+    path: /products/add
+    defaults: {_controller: AppBundle:Product:add}
+
+products_info:
+    path: /products/info
+    defaults: {_controller: AppBundle:Product:getProductInfo}
+
+customers:
+    path: /curtomers
+    defaults: {_controller: AppBundle:Customer:index}
+
+customers_add:
+    path: /curtomers/add
+    defaults: {_controller: AppBundle:Customer:add}
+
+invoices:
+    path: /invoices
+    defaults: {_controller: AppBundle:Invoice:index}
+
+invoices_add:
+    path: /invoices/add
+    defaults: {_controller: AppBundle:Invoice:add}
+
+invoices_show:
+    path: /invoices/show/{id}
+    defaults: {_controller: AppBundle:Invoice:show}
+
+
+debug:
+    path: /debug
+    defaults: {_controller: AppBundle:Default:debug}
+

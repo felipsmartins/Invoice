@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-md-12">
+            <h1>{{ title }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <a class="btn btn-default pull-right" href="{{ path('products') }}">Produtos</a>
+        </div>
+    </div>
+    <div class="row margin-top-20">
+        <div class="col-md-12">
+            {{ form_start(form, { attr: {id: form.vars.id, 'novalidate': 'novalidate', } }) }}
+            <!-- Nome do produto -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Nome</label>
+                        {{ form_widget(form.name) }}
+                        <div class="has-error">{{ form_errors(form.name) }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Preço e quantidade em estoque -->
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Preço unitário</label>
+                        {{ form_widget(form.price) }}
+                        <div class="has-error">{{ form_errors(form.price) }}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Quantidade em estoque</label>
+                        {{ form_widget(form.currentQuantity) }}
+                        <div class="has-error">{{ form_errors(form.currentQuantity) }}</div>
+                    </div>
+                </div>
+            </div>
+            <!-- Descrição -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        {{ form_widget(form.description) }}
+                        <div class="has-error">{{ form_errors(form.description) }}</div>
+                    </div>
+                </div>
+            </div>
+
+            <hr/>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div> <!-- end col-md-12 -->
+    </div>
+
+{% endblock %}
+
