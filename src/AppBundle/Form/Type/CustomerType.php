@@ -11,8 +11,8 @@ class CustomerType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('email', 'email')
+            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType')
+            ->add('email', 'Symfony\Component\Form\Extension\Core\Type\EmailType')
         ;
     }
 
@@ -23,7 +23,7 @@ class CustomerType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'customer';
     }

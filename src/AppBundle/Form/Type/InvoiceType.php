@@ -11,13 +11,13 @@ class InvoiceType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('customer', 'entity', array(
+            ->add('customer', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', array(
                 'class' => 'AppBundle:Customer',
                 'placeholder' => '',
             ))
-            ->add('notes', 'textarea')
-            ->add('items', 'collection', array(
-                'type'           => new InvoiceItemType(),
+            ->add('notes', 'Symfony\Component\Form\Extension\Core\Type\TextareaType')
+            ->add('items', 'Symfony\Component\Form\Extension\Core\Type\CollectionType', array(
+                'entry_type'     => 'AppBundle\Form\Type\InvoiceItemType',
                 'allow_add'      => true, # Permitir adição de vários campos extras
                 'allow_delete'   => true, # Permitir adição de campos existentes
                 'by_reference'   => false,
@@ -33,7 +33,7 @@ class InvoiceType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'invoice_form';
     }

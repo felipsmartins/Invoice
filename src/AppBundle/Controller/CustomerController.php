@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Customer;
-use AppBundle\Form\Type\CustomerType;
 
 class CustomerController extends Controller
 {
@@ -36,7 +35,7 @@ class CustomerController extends Controller
     public function addAction(Request $request)
     {
         $customer = new Customer();
-        $form = $this->createForm(new CustomerType(), $customer);
+        $form = $this->createForm('AppBundle\Form\Type\CustomerType', $customer);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

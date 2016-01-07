@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 use AppBundle\Entity\Invoice;
-use AppBundle\Form\Type\InvoiceType;
 use Symfony\Component\HttpFoundation\Response;
 
 
@@ -35,7 +34,7 @@ class InvoiceController extends Controller
     public function addAction(Request $request)
     {
         $invoice = new Invoice();
-        $form = $this->createForm(new InvoiceType(), $invoice);
+        $form = $this->createForm('AppBundle\Form\Type\InvoiceType', $invoice);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

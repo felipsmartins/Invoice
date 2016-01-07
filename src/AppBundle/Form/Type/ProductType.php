@@ -11,12 +11,12 @@ class ProductType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name')
-            ->add('price', 'money', array(
+            ->add('name', 'Symfony\Component\Form\Extension\Core\Type\TextType')
+            ->add('price', 'Symfony\Component\Form\Extension\Core\Type\MoneyType', array(
                 'currency' => 'BRL',
             ))
-            ->add('currentQuantity', 'integer')
-            ->add('description', 'textarea')
+            ->add('currentQuantity', 'Symfony\Component\Form\Extension\Core\Type\IntegerType')
+            ->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType')
         ;
     }
 
@@ -27,7 +27,7 @@ class ProductType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'product';
     }

@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 use AppBundle\Entity\Product;
-use AppBundle\Form\Type\ProductType;
 
 class ProductController extends Controller
 {
@@ -38,7 +37,7 @@ class ProductController extends Controller
     public function addAction(Request $request)
     {
         $product = new product();
-        $form = $this->createForm(new ProductType(), $product);
+        $form = $this->createForm('AppBundle\Form\Type\ProductType', $product);
         $form->handleRequest($request);
 
         if ($form->isValid()) {

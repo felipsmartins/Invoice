@@ -11,15 +11,15 @@ class InvoiceItemType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('product', 'entity', array(
+            ->add('product', 'Symfony\Bridge\Doctrine\Form\Type\EntityType', array(
                 'class' => 'AppBundle:Product',
                 'placeholder' => 'Selecinar',
             ))
-            ->add('productPrice', 'hidden', array(
+            ->add('productPrice', 'Symfony\Component\Form\Extension\Core\Type\HiddenType', array(
                 'mapped' => false,
             ))
-            ->add('quantity', 'integer')
-            ->add('totalPrice', 'money', array(
+            ->add('quantity', 'Symfony\Component\Form\Extension\Core\Type\IntegerType')
+            ->add('totalPrice', 'Symfony\Component\Form\Extension\Core\Type\MoneyType', array(
                 'currency' => 'BRL'
             ))
         ;
@@ -32,7 +32,7 @@ class InvoiceItemType extends AbstractType
         ));
     }
 
-    public function getName()
+    public function getBlockPrefix()
     {
         return 'invoice_product';
     }
